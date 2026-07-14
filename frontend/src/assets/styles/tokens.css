@@ -1,0 +1,48 @@
+/* DESIGN.md (Toss) 기반 디자인 토큰 — 상세 정의는 공통 기반 작업에서 확장 */
+:root {
+  --color-primary: #3182f6;
+  --color-primary-hover: #2272eb;
+  --color-canvas: #ffffff;
+  --color-foreground: #191f28;
+  --color-body: #4e5968;
+  --color-muted: #8b95a1;
+  --color-surface: #f2f4f6;
+  --color-border: #e5e8eb;
+  --color-on-primary: #ffffff;
+  --color-weak-bg: #e8f3ff;
+  --color-weak-fg: #1b64da;
+  --color-danger: #e42939;
+
+  --space-xs: 4px;
+  --space-sm: 6px;
+  --space-md: 8px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-button-sm: 8px;
+  --radius-button-md: 10px;
+  --radius-button-lg: 14px;
+  --radius-button-xl: 16px;
+
+  --font-h1-size: 36px;
+  --font-h1-weight: 700;
+  --font-h1-line-height: 54px;
+  --font-h2-size: 30px;
+  --font-h2-weight: 600;
+  --font-h2-line-height: 45px;
+  --font-h3-size: 24px;
+  --font-h3-weight: 600;
+  --font-h3-line-height: 36px;
+  --font-h4-size: 22px;
+  --font-h4-weight: 600;
+  --font-h4-line-height: 33px;
+  --font-body-size: 16px;
+  --font-body-weight: 400;
+  --font-body-line-height: 24px;
+  --font-body-small-size: 14px;
+  --font-body-small-weight: 400;
+  --font-body-small-line-height: 21px;
+}
