@@ -12,7 +12,10 @@ const DAY = 24 * HOUR;
 export function formatRelativeTime(iso) {
   if (!iso) return "";
 
-  const target = new Date(iso);
+  const hasTimezone = /[Zz]|[+-]\d{2}:?\d{2}$/.test(iso);
+  const normalized = hasTimezone ? iso : `${iso}Z`;
+
+  const target = new Date(normalized);
   if (Number.isNaN(target.getTime())) return "";
 
   const diff = Date.now() - target.getTime();
