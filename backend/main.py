@@ -67,3 +67,8 @@ except ImportError:
 @app.get("/")
 def read_root():
     return {"message": "LocalHub API Server Running (FastAPI + SQLite)"}
+
+
+@app.get("/healthz")
+def health_check():
+    return {"status": "ok"}
