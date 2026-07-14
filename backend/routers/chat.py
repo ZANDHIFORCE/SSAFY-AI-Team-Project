@@ -72,15 +72,19 @@ def get_chat_summary(
 
     try:
         client = OpenAI(api_key=api_key)
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
+        model_name = os.getenv("OPENAI_MODEL", "gpt-5-mini")
+        kwargs = {
+            "model": model_name,
+            "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": f"[현재 컨텍스트]\n{context_str}\n\n{question_str}"}
-            ],
-            max_tokens=200,
-            temperature=0.5
-        )
+            ]
+        }
+        if not any(prefix in model_name for prefix in ["gpt-5", "o1", "o3"]):
+            kwargs["max_tokens"] = 200
+            kwargs["temperature"] = 0.5
+
+        response = client.chat.completions.create(**kwargs)
         summary_text = response.choices[0].message.content.strip()
         return schemas.ChatSummaryResponse(summary=summary_text)
     except Exception as e:
