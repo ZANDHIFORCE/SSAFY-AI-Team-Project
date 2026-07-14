@@ -156,6 +156,18 @@ class TestBE2Endpoints(unittest.TestCase):
         self.assertIn("안녕하세요", summary)
         self.assertNotIn("데이터가 부족", summary)
 
+    def test_09_chatbot_out_of_scope_guardrail(self):
+        """[BE-08] AI 챗봇이 서비스 역할과 무관한 질문(예: 레시피)을 받았을 때 거절 안내 동작 검증"""
+        res = client.post("/api/chatbot/summary", json={
+            "place_id": 1,
+            "question": "명란소금빵 레시피 알려줘"
+        })
+        self.assertEqual(res.status_code, 200)
+        summary = res.json()["summary"]
+        self.assertIn("죄송합니다", summary)
+        self.assertIn("LocalHub", summary)
+        self.assertNotIn("소금", summary)  # 실제 레시피(재료 등)를 알려주지 않고 거절하는지 검증
+
 
 if __name__ == "__main__":
     unittest.main()
