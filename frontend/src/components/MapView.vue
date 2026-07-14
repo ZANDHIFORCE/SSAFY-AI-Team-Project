@@ -78,7 +78,13 @@ watch(() => props.places, renderMarkers, { deep: true });
 
 onBeforeUnmount(() => {
   if (map) {
-    map.remove();
+    map.stop();
+    map.off();
+    try {
+      map.remove();
+    } catch {
+      // ignore
+    }
     map = null;
     markerLayer = null;
   }
