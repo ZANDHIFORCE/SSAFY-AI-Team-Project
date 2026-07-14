@@ -278,12 +278,12 @@ RULE.md     → 본 문서 (루트 고정, 이동 금지)
 
 - [ ] `BE-01` GET /api/places
 - [ ] `BE-02` GET /api/places/{place_id}
-- [ ] `BE-03` GET /api/places/{place_id}/posts
-- [ ] `BE-04` GET /api/places/{place_id}/posts/{post_id}
-- [ ] `BE-05` POST /api/places/{place_id}/posts
-- [ ] `BE-06` PUT /api/places/{place_id}/posts/{post_id}
-- [ ] `BE-07` DELETE /api/places/{place_id}/posts/{post_id}
-- [ ] `BE-08` POST /api/chatbot/summary
+- [x] `BE-03` GET /api/places/{place_id}/posts
+- [x] `BE-04` GET /api/places/{place_id}/posts/{post_id}
+- [x] `BE-05` POST /api/places/{place_id}/posts
+- [x] `BE-06` PUT /api/places/{place_id}/posts/{post_id}
+- [x] `BE-07` DELETE /api/places/{place_id}/posts/{post_id}
+- [x] `BE-08` POST /api/chatbot/summary
 - [ ] SigunguCode 마스터 테이블 시드 데이터 삽입
 - [ ] Place 시드 데이터 삽입 (최소 3곳 이상, sigungu_code 매핑 포함)
 
