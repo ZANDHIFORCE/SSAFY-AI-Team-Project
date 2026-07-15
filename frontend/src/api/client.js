@@ -5,7 +5,13 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const warning = response.headers["x-chatbot-warning"];
+    if (warning) {
+      console.warn(`[Backend Warning] ${decodeURIComponent(warning)}`);
+    }
+    return response;
+  },
   (error) => {
     error.detail =
       error.response?.data?.detail ??
