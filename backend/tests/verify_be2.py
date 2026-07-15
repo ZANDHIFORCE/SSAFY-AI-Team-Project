@@ -144,6 +144,9 @@ class TestBE2Endpoints(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         data = res.json()
         self.assertIn("summary", data)
+        # API 키 미설정 또는 API 오류 시 경고 헤더가 포함되어야 함
+        if not os.getenv("OPENAI_API_KEY"):
+            self.assertIn("x-chatbot-warning", res.headers)
 
     def test_08_chatbot_smalltalk(self):
         """[BE-08] AI 챗봇 스몰톡/인사 질문 시 '데이터 없음' 거절 대신 친절한 안내 응답 검증"""
@@ -168,6 +171,19 @@ class TestBE2Endpoints(unittest.TestCase):
         self.assertIn("LocalHub", summary)
         self.assertNotIn("소금", summary)  # 실제 레시피(재료 등)를 알려주지 않고 거절하는지 검증
 
+    def test_10_chatbot_initial_greeting(self):
+        """[BE-08] 최초 진입 시 (place_id=None, question=None) 웰컴 인사말 반환 검증"""
+        res = client.post("/api/chatbot/summary", json={
+            "place_id": None,
+            "question": None
+        })
+        self.assertEqual(res.status_code, 200)
+        summary = res.json()["summary"]
+        self.assertIn("안녕하세요", summary)
+        self.assertIn("AI 동향 분석 어시스턴트", summary)
+        self.assertIn("지도상의 핫플레이스를 선택", summary)
+
 
 if __name__ == "__main__":
     unittest.main()
+
