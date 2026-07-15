@@ -190,16 +190,7 @@ def load_initial_seed_data(db: Session) -> None:
         _load_export_block_posts(db, hashed_pw, rand_mins)
 
 
-def _load_export_block_posts(db, hashed_pw, rand_mins):
-    """ExportBlock 폴더의 노션 내보내기 사람이 직접 작성한 구별 실시간 글(사진 포함)을 적재합니다."""
-    import os
-    import glob
-    import base64
-    from datetime import datetime
-
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    export_defs = [
+EXPORT_DEFS = [
         # 1. 강남구 (place_id: 23)
         ("강남구", 23, "싸피출근고수", "강남역에서 사고나서 버스 다 서있어요..",
          "### 🚨 강남역 인근 광역버스 정렬 및 대기 지연 안내\n\n아… 강남역에서 사고 났다.. 다들 그냥 걸어가라. 지금 30분째 강남역이야… 하.. 오늘 SSAFY 발표날인데 하..", "image.png"),
@@ -260,11 +251,21 @@ def _load_export_block_posts(db, hashed_pw, rand_mins):
         # 20. 영등포구 (place_id: 19)
         ("영등포구", 19, "드론쇼매니아", "여의도 한강공원에 드론쇼 해요!",
          "### 🚁 여의도 한강공원 1,000대 규모 눕방 드론 라이트쇼\n\n진짜 이뻐요 밖에 나오세요! 밤하늘을 수놓는 대규모 드론 라이트쇼가 여의도 잔디밭 상공에서 진행 중입니다.", "image 18.png")
-    ]
+]
+
+
+def _load_export_block_posts(db, hashed_pw, rand_mins):
+    """ExportBlock 폴더의 노션 내보내기 사람이 직접 작성한 구별 실시간 글(사진 포함)을 적재합니다."""
+    import os
+    import glob
+    import base64
+    from datetime import datetime
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
 
     export_posts = []
     current_time = datetime.utcnow()
-    for place_name, p_id, nick, title, body, img_name in export_defs:
+    for place_name, p_id, nick, title, body, img_name in EXPORT_DEFS:
         img_matches = glob.glob(os.path.join(base_dir, "ExportBlock*", img_name))
         content = body
         if img_matches and os.path.exists(img_matches[0]):

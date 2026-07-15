@@ -97,6 +97,18 @@ def get_chat_summary(
     context_str = get_fallback_context_for_ai(req.place_id, db)
     question_str = f"사용자 질문: {req.question}" if req.question else "전반적인 실시간 동향과 인파/이벤트 이슈를 간결하게 요약해 주세요."
 
+    # _load_export_block_posts의 export_defs 데이터를 사전 컨텍스트로 주입 (이미지 제외하고 글만)
+    prior_context_str = ""
+    try:
+        from utils.data_loader import EXPORT_DEFS
+        prior_lines = []
+        for place_name, _, nick, title, body, _ in EXPORT_DEFS:
+            prior_lines.append(f"[{place_name}] {title} (작성자: {nick})\n{body}")
+        if prior_lines:
+            prior_context_str = "[사전 컨텍스트 (실시간 블로그/포스트 정보)]\n" + "\n\n".join(prior_lines)
+    except Exception as e:
+        print(f"[Warning] EXPORT_DEFS 로드 실패: {e}")
+
     system_prompt = (
         "당신은 공공데이터 기반 실시간 커뮤니티 LocalHub의 AI 동향 분석 어시스턴트입니다.\n"
         "다음 원칙을 지켜서 답변하세요:\n"
@@ -120,11 +132,17 @@ def get_chat_summary(
     try:
         client = OpenAI(api_key=api_key)
         model_name = os.getenv("OPENAI_MODEL", "gpt-5-mini")
+        
+        user_content = ""
+        if prior_context_str:
+            user_content += f"{prior_context_str}\n\n"
+        user_content += f"[현재 컨텍스트]\n{context_str}\n\n{question_str}"
+
         kwargs = {
             "model": model_name,
             "messages": [
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"[현재 컨텍스트]\n{context_str}\n\n{question_str}"}
+                {"role": "user", "content": user_content}
             ]
         }
         if not any(prefix in model_name for prefix in ["gpt-5", "o1", "o3"]):
